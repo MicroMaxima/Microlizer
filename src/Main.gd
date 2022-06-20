@@ -1,3 +1,5 @@
+# Written by MicroMaxima - https://twitter.com/Micromaxima
+
 extends Node
 
 onready var stream = get_node("/root/LiveAudio")

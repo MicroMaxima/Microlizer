@@ -44,6 +44,11 @@ Issues
 - There will always be some latency between the audio source sound, and the render in Microlizer. I've found delaying the audio before it's leaving your machine for its intended purpose, eg. in OBS Studio if streaming, is a decent workaround. For me best results streaming via OBS was a delay of about 250ms.
 - There is some artifacting from screen space reflections. This might be something to fix in Godot 4.
 
+Credits
+-------
+Written by MicroMaxima - <https://twitter.com/Micromaxima>  
+Thanks to Gonkee for his AV vid - <https://www.youtube.com/watch?v=AwgSICbGxJM>
+
 License
 -------
 Released under the MIT License
