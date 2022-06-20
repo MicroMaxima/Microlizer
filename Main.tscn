@@ -1,0 +1,249 @@
+[gd_scene load_steps=35 format=2]
+
+[ext_resource path="res://src/visualiser.gd" type="Script" id=1]
+[ext_resource path="res://src/Main.gd" type="Script" id=2]
+[ext_resource path="res://src/LiveAudio.gd" type="Script" id=3]
+[ext_resource path="res://environments/dark.tres" type="Environment" id=5]
+[ext_resource path="res://src/VUmeters.gd" type="Script" id=7]
+[ext_resource path="res://shaders/chromatic.gdshader" type="Shader" id=9]
+[ext_resource path="res://src/FrontCam.gd" type="Script" id=10]
+[ext_resource path="res://src/Controls.gd" type="Script" id=11]
+[ext_resource path="res://src/LowerSpin.gd" type="Script" id=12]
+[ext_resource path="res://src/Upperspin.gd" type="Script" id=14]
+[ext_resource path="res://src/VFX.gd" type="Script" id=15]
+[ext_resource path="res://src/Galaxy.gd" type="Script" id=16]
+[ext_resource path="res://src/LowerLight.gd" type="Script" id=17]
+[ext_resource path="res://src/UpperLight.gd" type="Script" id=18]
+[ext_resource path="res://scenes/Speaker.tscn" type="PackedScene" id=19]
+[ext_resource path="res://src/Speaker.gd" type="Script" id=20]
+[ext_resource path="res://src/CameraRig.gd" type="Script" id=21]
+[ext_resource path="res://scenes/MusicIsLife.tscn" type="PackedScene" id=22]
+[ext_resource path="res://src/MusicIsLife.gd" type="Script" id=23]
+
+[sub_resource type="AudioStreamMicrophone" id=1]
+
+[sub_resource type="CubeMesh" id=3]
+size = Vector3( 60, 2, 60 )
+
+[sub_resource type="SpatialMaterial" id=5]
+metallic = 0.91
+roughness = 0.75
+anisotropy_enabled = true
+anisotropy = 0.0
+
+[sub_resource type="Curve" id=10]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 0.293478, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=11]
+curve = SubResource( 10 )
+
+[sub_resource type="ParticlesMaterial" id=7]
+emission_shape = 2
+emission_box_extents = Vector3( 6, 3, 3 )
+spread = 180.0
+gravity = Vector3( 0, 0, 1 )
+initial_velocity_random = 1.0
+scale = 0.01
+scale_curve = SubResource( 11 )
+
+[sub_resource type="SpatialMaterial" id=8]
+flags_unshaded = true
+
+[sub_resource type="SphereMesh" id=9]
+material = SubResource( 8 )
+
+[sub_resource type="SpatialMaterial" id=19]
+metallic = 1.0
+roughness = 0.62
+
+[sub_resource type="Curve" id=23]
+_data = [ Vector2( 0, 0.00805104 ), 0.0, -0.0506887, 0, 0, Vector2( 0.277174, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.782609, 1 ), -0.0025856, -0.0025856, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=24]
+curve = SubResource( 23 )
+
+[sub_resource type="ParticlesMaterial" id=20]
+emission_shape = 5
+emission_ring_radius = 3.3
+emission_ring_inner_radius = 3.2
+emission_ring_height = 0.3
+emission_ring_axis = Vector3( 0, 10.534, 0 )
+direction = Vector3( 0, 0, 0 )
+gravity = Vector3( 0, 0, 0 )
+tangential_accel = -0.2
+scale = 0.01
+scale_random = 0.02
+scale_curve = SubResource( 24 )
+
+[sub_resource type="SpatialMaterial" id=21]
+emission_enabled = true
+emission = Color( 1, 1, 1, 1 )
+emission_energy = 8.6
+emission_operator = 0
+emission_on_uv2 = false
+
+[sub_resource type="SphereMesh" id=22]
+material = SubResource( 21 )
+
+[sub_resource type="ShaderMaterial" id=6]
+shader = ExtResource( 9 )
+shader_param/center = Vector2( 0.5, 0.5 )
+shader_param/force = 0.022
+shader_param/size = 0.832
+shader_param/thickness = 0.227
+
+[node name="Main" type="Node"]
+script = ExtResource( 2 )
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = ExtResource( 5 )
+
+[node name="LiveAudio" type="AudioStreamPlayer" parent="."]
+stream = SubResource( 1 )
+volume_db = 24.0
+autoplay = true
+bus = "Stream"
+script = ExtResource( 3 )
+
+[node name="Controls" type="Node" parent="."]
+script = ExtResource( 11 )
+
+[node name="UI" type="Node2D" parent="Controls"]
+visible = false
+position = Vector2( 95, 89 )
+
+[node name="TextEdit" type="RichTextLabel" parent="Controls/UI"]
+anchor_right = 0.22
+margin_right = 248.0
+margin_bottom = 220.0
+text = "Keyboard Controls
+
+0: White colour preset changes
+1-7: Multi-colour preset changes
+K: Toggle these keyboard controls
+G: Galaxy visibility toggle
+F: Fullscreen toggle
+D: Debug visibility toggle
+Q: Quit application"
+
+[node name="Spatial" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.659, 0 )
+
+[node name="UpperFloor" type="MeshInstance" parent="Spatial"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.109447, 6.18243, 0.331132 )
+mesh = SubResource( 3 )
+skeleton = NodePath("")
+material/0 = SubResource( 5 )
+
+[node name="UpperLight" type="OmniLight" parent="Spatial"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.57191, 0 )
+light_energy = 5.0
+omni_range = 3.414
+script = ExtResource( 18 )
+
+[node name="LowerFloor" type="MeshInstance" parent="Spatial"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.109447, -0.354012, 0.331132 )
+mesh = SubResource( 3 )
+skeleton = NodePath("")
+material/0 = SubResource( 5 )
+
+[node name="LowerLight" type="OmniLight" parent="Spatial"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.18118, 0 )
+light_energy = 5.0
+omni_range = 3.414
+script = ExtResource( 17 )
+
+[node name="TopSpot" type="SpotLight" parent="."]
+transform = Transform( 0.939733, 0.00624357, -0.341851, 0.288269, 0.523171, 0.801993, 0.183854, -0.852205, 0.489841, -1.07009, 3.91782, 1.44135 )
+light_energy = 2.762
+light_specular = 2.849
+spot_range = 3.24552
+spot_angle = 47.54
+
+[node name="LowerSpot" type="SpotLight" parent="."]
+transform = Transform( 0.355889, 0.843711, 0.401864, -0.330518, 0.515863, -0.790344, -0.874129, 0.148451, 0.462452, 1.40999, 0.92649, 2.11524 )
+light_energy = 3.643
+light_specular = 2.849
+spot_range = 1.96299
+spot_angle = 54.8438
+
+[node name="CameraRig" type="Position3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.58568, 5.93178 )
+script = ExtResource( 21 )
+
+[node name="FrontCam" type="Camera" parent="CameraRig"]
+transform = Transform( 1, 2.6077e-08, 5.28475e-31, -2.6077e-08, 0.999999, 0, 0, 0, 0.999999, 0, -0.156213, 0.694216 )
+script = ExtResource( 10 )
+
+[node name="CamFocus" type="Position3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.63521, -1.1221 )
+
+[node name="Speaker" parent="." instance=ExtResource( 19 )]
+transform = Transform( 1.62426, 0, 0, 0, 1.26516, -1.01863, 0, 1.01863, 1.26516, 0, 1.59561, 0 )
+script = ExtResource( 20 )
+
+[node name="VUmeters" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.02, 0 )
+script = ExtResource( 7 )
+
+[node name="MusicIsLife" parent="." instance=ExtResource( 22 )]
+transform = Transform( 0.466, 0, 0, 0, 0.403568, -0.233, 0, 0.233, 0.403568, 0.00779751, 1.015, 3.686 )
+script = ExtResource( 23 )
+
+[node name="SpaceWarp" type="Particles" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0 )
+cast_shadow = 0
+amount = 200
+lifetime = 5.0
+visibility_aabb = AABB( -5.43455, -3, -4, 10.8691, 6, 8 )
+process_material = SubResource( 7 )
+draw_pass_1 = SubResource( 9 )
+
+[node name="LowerSpin" type="CSGTorus" parent="."]
+transform = Transform( 0.779423, 0, 0.45, 0, 1, 0, -0.45, 0, 0.779423, 0, 0, 0 )
+inner_radius = 3.20613
+outer_radius = 5.04543
+sides = 3
+smooth_faces = false
+material = SubResource( 19 )
+script = ExtResource( 12 )
+
+[node name="Upperspin" type="CSGTorus" parent="."]
+transform = Transform( 0.779423, 0, 0.45, 0, 1, 0, -0.45, 0, 0.779423, 0, 4.52499, 0 )
+inner_radius = 3.20613
+outer_radius = 5.04543
+sides = 3
+smooth_faces = false
+material = SubResource( 19 )
+script = ExtResource( 14 )
+
+[node name="Galaxy" type="Particles" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.25459, 0 )
+cast_shadow = 0
+amount = 350
+lifetime = 6.0
+process_material = SubResource( 20 )
+draw_pass_1 = SubResource( 22 )
+script = ExtResource( 16 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="VFX" type="ColorRect" parent="CanvasLayer"]
+material = SubResource( 6 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 15 )
+
+[node name="Debug" type="Node2D" parent="."]
+visible = false
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Debug"]
+margin_left = 28.0
+margin_top = 27.0
+margin_right = 240.0
+margin_bottom = 93.0
+text = "DEBUG BITS"
+
+[node name="visualiser" type="Node2D" parent="Debug"]
+position = Vector2( 26, 251 )
+script = ExtResource( 1 )

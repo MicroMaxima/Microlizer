@@ -1,0 +1,37 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=4
+
+[application]
+
+config/name="Microlizer"
+config/description="Microlizer
+==========
+Microlizer is a GDScript audio visualiser written for the Godot game engine. It was born out of an interest in driving a 3D scene from audio input and could be useful for live visuals."
+run/main_scene="res://Main.tscn"
+config/icon="res://icon.png"
+
+[audio]
+
+enable_audio_input=true
+
+[display]
+
+window/size/width=1920
+window/size/height=1080
+
+[physics]
+
+common/enable_pause_aware_picking=true
+
+[rendering]
+
+environment/default_clear_color=Color( 0, 0, 0, 1 )
+quality/filters/use_fxaa=true
+environment/default_environment="res://environments/dark.tres"

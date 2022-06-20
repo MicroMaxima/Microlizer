@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="SpatialMaterial" id=6]
+flags_unshaded = true
+albedo_color = Color( 1, 0, 0.654902, 1 )
+
+[node name="CSGBox" type="CSGBox"]
+width = 0.47
+height = 0.01
+depth = 0.47
+material = SubResource( 6 )
